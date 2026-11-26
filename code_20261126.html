@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测测你的灵魂对应哪位中国历史人物</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ink': '#2c1810',
+                        'vermilion': '#c23a30',
+                        'gold': '#c9a962',
+                        'jade': '#5b7c6e',
+                        'paper': '#f5efe6',
+                        'paper-dark': '#e8dfd2',
+                    },
+                    fontFamily: {
+                        'serif-cn': ['"Noto Serif SC"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5efe6 0%, #e8dfd2 100%);
+            min-height: 100vh;
+        }
+        
+        .bg-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(201, 169, 98, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(194, 58, 48, 0.06) 0%, transparent 50%);
+        }
+        
+        .card-shadow {
+            box-shadow: 0 10px 40px rgba(44, 24, 16, 0.12), 0 2px 8px rgba(44, 24, 16, 0.08);
+        }
+        
+        .option-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(201, 169, 98, 0.3);
+        }
+        
+        .option-card:hover {
+            transform: translateY(-2px);
+            border-color: #c9a962;
+            background: rgba(201, 169, 98, 0.08);
+        }
+        
+        .option-card:active {
+            transform: translateY(0);
+        }
+        
+        .option-card.selected {
+            border-color: #c23a30;
+            background: rgba(194, 58, 48, 0.06);
+        }
+        
+        .fade-enter {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        
+        .fade-enter-active {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.4s ease-out;
+        }
+        
+        .fade-exit {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .fade-exit-active {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.3s ease-in;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #c23a30, #c9a962);
+            transition: width 0.5s ease-out;
+        }
+        
+        .result-card {
+            background: linear-gradient(145deg, #f5efe6 0%, #ebe2d3 100%);
+        }
+        
+        .title-decoration::before,
+        .title-decoration::after {
+            content: '——';
+            color: #c9a962;
+            margin: 0 0.5em;
+        }
+        
+        .ink-border {
+            border: 1px solid rgba(44, 24, 16, 0.15);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #c23a30 0%, #a02d25 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(194, 58, 48, 0.35);
+        }
+        
+        .btn-secondary {
+            border: 1px solid #c9a962;
+            color: #8b6914;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(201, 169, 98, 0.15);
+        }
+        
+        .dimension-bar {
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(44, 24, 16, 0.1);
+            overflow: hidden;
+        }
+        
+        .dimension-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 1s ease-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .quote-text {
+            font-style: italic;
+            color: #5b7c6e;
+            position: relative;
+            padding-left: 1em;
+            border-left: 3px solid #c9a962;
+        }
+    </style>
+</head>
+<body class="bg-pattern">
+    <div id="app" class="min-h-screen flex items-center justify-center p-4">
+        <!-- 首页 -->
+        <div id="home-page" class="w-full max-w-lg">
+            <div class="text-center mb-8">
+                <div class="text-gold text-sm tracking-[0.3em] mb-3">SOUL MATCH</div>
+                <h1 class="text-3xl md:text-4xl font-bold text-ink mb-2">测测你的灵魂</h1>
+                <h2 class="text-2xl md:text-3xl font-bold text-vermilion mb-6">对应哪位中国历史人物</h2>
+                <div class="w-16 h-0.5 bg-gold mx-auto mb-6"></div>
+                <p class="text-ink/70 text-sm leading-relaxed max-w-sm mx-auto">
+                    穿越千年时光，探寻灵魂深处的共鸣。<br>
+                    四十道生活点滴，映照你心底的历史回响。
+                </p>
+            </div>
+            
+            <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-6 card-shadow mb-6">
+                <div class="grid grid-cols-4 gap-4 text-center mb-4">
+                    <div class="float-animation" style="animation-delay: 0s;">
+                        <div class="text-2xl mb-1">🗡️</div>
+                        <div class="text-xs text-ink/60">侠客</div>
+                    </div>
+                    <div class="float-animation" style="animation-delay: 0.3s;">
+                        <div class="text-2xl mb-1">👑</div>
+                        <div class="text-xs text-ink/60">帝王</div>
+                    </div>
+                    <div class="float-animation" style="animation-delay: 0.6s;">
+                        <div class="text-2xl mb-1">📜</div>
+                        <div class="text-xs text-ink/60">谋士</div>
+                    </div>
+                    <div class="float-animation" style="animation-delay: 0.9s;">
+                        <div class="text-2xl mb-1">🖌️</div>
+                        <div class="text-xs text-ink/60">文人</div>
+                    </div>
+                </div>
+                <div class="text-center text-xs text-ink/50">
+                    共 7 种结果 · 40 道题目 · 约 5 分钟完成
+                </div>
+            </div>
+            
+            <button onclick="startQuiz()" class="btn-primary w-full py-4 rounded-xl text-white font-medium text-lg tracking-wider">
+                开始测试
+            </button>
+            
+            <p class="text-center text-xs text-ink/40 mt-4">
+                * 本测试仅供娱乐，请勿对号入座
+            </p>
+        </div>
+        
+        <!-- 答题页 -->
+        <div id="quiz-page" class="w-full max-w-lg hidden">
+            <!-- 进度条 -->
+            <div class="mb-6">
+                <div class="flex justify-between text-xs text-ink/60 mb-2">
+                    <span id="progress-text">第 1 题 / 共 40 题</span>
+                    <span id="progress-percent">2%</span>
+                </div>
+                <div class="w-full h-1.5 bg-ink/10 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="progress-bar h-full rounded-full" style="width: 2.5%"></div>
+                </div>
+            </div>
+            
+            <!-- 题目卡片 -->
+            <div id="question-container" class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 md:p-8 card-shadow min-h-[400px]">
+                <div id="question-content">
+                    <!-- 题目内容由JS动态渲染 -->
+                </div>
+            </div>
+            
+            <!-- 底部按钮 -->
+            <div class="flex justify-between mt-6">
+                <button id="prev-btn" onclick="prevQuestion()" class="btn-secondary px-6 py-3 rounded-lg text-sm disabled:opacity-30" disabled>
+                    上一题
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="btn-primary px-8 py-3 rounded-lg text-sm text-white disabled:opacity-50" disabled>
+                    下一题
+                </button>
+            </div>
+        </div>
+        
+        <!-- 结果页 -->
+        <div id="result-page" class="w-full max-w-lg hidden">
+            <div id="result-content" class="result-card rounded-2xl card-shadow overflow-hidden">
+                <!-- 结果内容由JS动态渲染 -->
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="restartQuiz()" class="btn-secondary flex-1 py-3 rounded-lg text-sm">
+                    重新测试
+                </button>
+                <button onclick="shareResult()" class="btn-primary flex-1 py-3 rounded-lg text-sm text-white">
+                    分享结果
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 七维性格指数
+        const dimensions = {
+            strategy: 0,    // 谋略 - 谋士
+            leadership: 0, // 领导力 - 帝王
+            talent: 0,     // 才情 - 文人
+            chivalry: 0,   // 侠义 - 侠客
+            romance: 0,    // 浪漫 - 诗人
+            loyalty: 0,    // 忠义 - 将领
+            detachment: 0  // 淡泊 - 隐士
+        };
+        
+        // 用户答案记录
+        let answers = {};
+        let currentQuestion = 0;
+        
+        // 40道题目
+        const questions = [
+            // 日常习惯 1-8
+            {
+                q: "周末早晨醒来，你通常会？",
+                options: [
+                    { text: "提前规划好一天的行程，按部就班执行", scores: { strategy: 2, leadership: 1 } },
+                    { text: "想到什么做什么，随性安排", scores: { romance: 2, chivalry: 1 } },
+                    { text: "赖床发呆，享受无所事事的时光", scores: { detachment: 2, talent: 1 } },
+                    { text: "约朋友出门聚会，热闹度过", scores: { leadership: 2, chivalry: 1 } }
+                ]
+            },
+            {
+                q: "面对待办清单上的很多任务，你的习惯是？",
+                options: [
+                    { text: "分清轻重缓急，制定最优策略逐个击破", scores: { strategy: 3 } },
+                    { text: "一鼓作气全部做完，绝不拖延", scores: { loyalty: 2, leadership: 1 } },
+                    { text: "挑感兴趣的先做，剩下的再说", scores: { talent: 2, romance: 1 } },
+                    { text: "能拖就拖， deadline 才是第一生产力", scores: { detachment: 2, chivalry: 1 } }
+                ]
+            },
+            {
+                q: "你的房间/桌面通常是什么状态？",
+                options: [
+                    { text: "井井有条，每样东西都有固定位置", scores: { strategy: 2, loyalty: 1 } },
+                    { text: "看似杂乱，但我知道每样东西在哪", scores: { talent: 2, romance: 1 } },
+                    { text: "乱中有序，偶尔心血来潮大扫除", scores: { chivalry: 2, leadership: 1 } },
+                    { text: "越简单越好，东西越少越自在", scores: { detachment: 3 } }
+                ]
+            },
+            {
+                q: "出门旅行前，你会做怎样的准备？",
+                options: [
+                    { text: "做详细攻略，精确到每个时间段", scores: { strategy: 2, loyalty: 1 } },
+                    { text: "定好机酒就行，到了再说", scores: { chivalry: 2, leadership: 1 } },
+                    { text: "只带一个背包，走到哪算哪", scores: { romance: 2, detachment: 1 } },
+                    { text: "查好当地美食和风景点，主打一个体验", scores: { talent: 2, romance: 1 } }
+                ]
+            },
+            {
+                q: "遇到下雨没带伞，你会？",
+                options: [
+                    { text: "观察天气规律，等雨小了再走", scores: { strategy: 2 } },
+                    { text: "直接冲出去，淋雨也挺爽", scores: { chivalry: 2, romance: 1 } },
+                    { text: "找个地方坐坐，顺便看看雨景", scores: { talent: 2, detachment: 1 } },
+                    { text: "立刻叫车/联系朋友来接", scores: { leadership: 2, loyalty: 1 } }
+                ]
+            },
+            {
+                q: "手机里的APP排序，你倾向于？",
+                options: [
+                    { text: "按功能分类整理，效率优先", scores: { strategy: 2, leadership: 1 } },
+                    { text: "按颜色排列，看着舒服最重要", scores: { talent: 2, romance: 1 } },
+                    { text: "随便放，用的时候搜索", scores: { detachment: 2, chivalry: 1 } },
+                    { text: "常用的放首页，其他藏起来", scores: { loyalty: 2, strategy: 1 } }
+                ]
+            },
+            {
+                q: "吃饭的时候，你更习惯？",
+                options: [
+                    { text: "固定吃那几家，不轻易尝试新店", scores: { loyalty: 2, strategy: 1 } },
+                    { text: "每家店都想试试，喜欢新鲜感", scores: { romance: 2, talent: 1 } },
+                    { text: "有好吃的会立刻分享给朋友", scores: { chivalry: 2, leadership: 1 } },
+                    { text: "清淡简单就好，不追求口味", scores: { detachment: 3 } }
+                ]
+            },
+            {
+                q: "睡前半小时，你通常在做什么？",
+                options: [
+                    { text: "复盘今天，规划明天", scores: { strategy: 2, leadership: 1 } },
+                    { text: "刷手机放松，困了就睡", scores: { chivalry: 1, detachment: 1 } },
+                    { text: "看书听音乐，沉浸在自己的世界", scores: { talent: 2, romance: 1 } },
+                    { text: "冥想放空，什么都不想", scores: { detachment: 2, talent: 1 } }
+                ]
+            },
+            
+            // 处事方式 9-16
+            {
+                q: "遇到棘手的难题，你的第一反应是？",
+                options: [
+                    { text: "冷静分析利弊，找出最优解", scores: { strategy: 3 } },
+                    { text: "迎难而上，硬着头皮也要上", scores: { chivalry: 2, loyalty: 1 } },
+                    { text: "换个角度看，说不定是件好事", scores: { detachment: 2, talent: 1 } },
+                    { text: "召集大家一起商量解决", scores: { leadership: 2, chivalry: 1 } }
+                ]
+            },
+            {
+                q: "做决定时，你更依赖？",
+                options: [
+                    { text: "理性分析和数据支撑", scores: { strategy: 2, loyalty: 1 } },
+                    { text: "直觉和内心感受", scores: { romance: 2, talent: 1 } },
+                    { text: "过往经验和稳妥方案", scores: { leadership: 2, loyalty: 1 } },
+                    { text: "随缘，怎么选都可以", scores: { detachment: 3 } }
+                ]
+            },
+            {
+                q: "如果计划被意外打乱，你会？",
+                options: [
+                    { text: "迅速调整方案，制定Plan B", scores: { strategy: 3 } },
+                    { text: "有点烦躁，但很快接受现实", scores: { leadership: 1, loyalty: 1 } },
+                    { text: "既来之则安之，说不定有惊喜", scores: { romance: 2, chivalry: 1 } },
+                    { text: "顺势躺平，正好不用忙了", scores: { detachment: 2, talent: 1 } }
+                ]
+            },
+            {
+                q: "面对别人的质疑，你通常会？",
+                options: [
+                    { text: "用事实和逻辑说服对方", scores: { strategy: 2, leadership: 1 } },
+                    { text: "一笑置之，懒得解释", scores: { detachment: 2, chivalry: 1 } },
+                    { text: "心里不舒服，但表面不动声色", scores: { talent: 1, loyalty: 1 } },
+                    { text: "坚持自己的路，用结果证明", scores: { chivalry: 2, loyalty: 1 } }
+                ]
+            },
+            {
+                q: "一件事成功了，你第一时间会想？",
+                options: [
+                    { text: "总结经验，为下一次做准备", scores: { strategy: 2, leadership: 1 } },
+                    { text: "感谢帮助过自己的人", scores: { loyalty: 2, chivalry: 1 } },
+                    { text: "开心庆祝，享受当下", scores: { romance: 2, talent: 1 } },
+                    { text: "功成身退，淡泊名利", scores: { detachment: 2, talent: 1 } }
+                ]
+            },
+            {
+                q: "犯错之后，你的心态是？",
+                options: [
+                    { text: "分析原因，避免再犯", scores: { strategy: 2, loyalty: 1 } },
+                    { text: "敢作敢当，主动承担责任", scores: { chivalry: 2, leadership: 1 } },
+                    { text: "人非圣贤，放过自己", scores: { detachment: 2, romance: 1 } },
+                    { text: "转化为创作/感悟的素材", scores: { talent: 2, romance: 1 } }
+                ]
+            },
+            {
+                q: "面对竞争，你的态度是？",
+                options: 
