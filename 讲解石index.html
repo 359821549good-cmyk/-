@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测测你的灵魂对应什么职业</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366F1',
+                        secondary: '#8B5CF6',
+                        accent: '#EC4899',
+                        dark: '#1E1B4B',
+                        light: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans SC', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-gradient {
+                background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .bg-gradient-card {
+                background: linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.8) 100%);
+                backdrop-filter: blur(10px);
+            }
+            .bg-gradient-main {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+            .option-hover {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .option-hover:hover {
+                transform: translateX(8px);
+                box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.2);
+            }
+            .progress-bar {
+                background: linear-gradient(90deg, #6366F1, #8B5CF6, #EC4899);
+                background-size: 200% 100%;
+                animation: gradientMove 2s linear infinite;
+            }
+            @keyframes gradientMove {
+                0% { background-position: 0% 50%; }
+                100% { background-position: 200% 50%; }
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-50 font-sans">
+    <!-- 装饰背景元素 -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-8">
+        <!-- 首页 -->
+        <div id="homePage" class="w-full max-w-lg animate-fade-in">
+            <div class="text-center mb-8">
+                <div class="inline-block mb-6 animate-float">
+                    <div class="w-24 h-24 mx-auto rounded-2xl bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center shadow-2xl shadow-primary/30">
+                        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <h1 class="text-[clamp(1.8rem,5vw,2.5rem)] font-black text-dark mb-3 leading-tight">
+                    测测你的灵魂<br><span class="text-gradient">对应什么职业</span>
+                </h1>
+                <p class="text-slate-500 text-lg mb-8">20道题，解锁你灵魂深处的职业天赋</p>
+            </div>
+
+            <div class="bg-gradient-card rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-white/60 mb-6">
+                <div class="space-y-4 mb-8">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                            <span class="text-primary font-bold">1</span>
+                        </div>
+                        <span class="text-slate-700">从日常习惯洞察性格特质</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                            <span class="text-secondary font-bold">2</span>
+                        </div>
+                        <span class="text-slate-700">多维度分析灵魂职业属性</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
+                            <span class="text-accent font-bold">3</span>
+                        </div>
+                        <span class="text-slate-700">生成专属结果页，一键分享</span>
+                    </div>
+                </div>
+
+                <button onclick="startTest()" class="w-full py-4 px-6 bg-gradient-to-r from-primary via-secondary to-accent text-white font-bold text-lg rounded-2xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transform hover:-translate-y-0.5 transition-all duration-300">
+                    开始测试
+                </button>
+            </div>
+
+            <p class="text-center text-slate-400 text-sm">· 趣味测试，仅供娱乐 ·</p>
+        </div>
+
+        <!-- 答题页 -->
+        <div id="quizPage" class="w-full max-w-lg hidden">
+            <!-- 进度条 -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium text-slate-600">第 <span id="currentNum">1</span> / 20 题</span>
+                    <span id="progressText" class="text-sm font-medium text-primary">5%</span>
+                </div>
+                <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
+                    <div id="progressBar" class="h-full progress-bar rounded-full transition-all duration-500 ease-out" style="width: 5%"></div>
+                </div>
+            </div>
+
+            <!-- 题目卡片 -->
+            <div class="bg-gradient-card rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-white/60 min-h-[400px] flex flex-col">
+                <h2 id="questionText" class="text-xl font-bold text-dark mb-6 leading-relaxed"></h2>
+                <div id="optionsContainer" class="space-y-3 flex-1"></div>
+            </div>
+        </div>
+
+        <!-- 加载页 -->
+        <div id="loadingPage" class="w-full max-w-lg hidden text-center">
+            <div class="bg-gradient-card rounded-3xl p-12 shadow-xl shadow-slate-200/50 border border-white/60">
+                <div class="w-20 h-20 mx-auto mb-6 relative">
+                    <div class="absolute inset-0 rounded-full border-4 border-slate-200"></div>
+                    <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-primary animate-spin"></div>
+                    <div class="absolute inset-2 rounded-full border-4 border-transparent border-t-secondary animate-spin" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
+                </div>
+                <h3 class="text-xl font-bold text-dark mb-2">正在分析你的灵魂属性</h3>
+                <p id="loadingTip" class="text-slate-500">计算性格维度中...</p>
+            </div>
+        </div>
+
+        <!-- 结果页 -->
+        <div id="resultPage" class="w-full max-w-lg hidden animate-slide-up">
+            <div class="bg-white rounded-3xl shadow-2xl shadow-slate-300/30 overflow-hidden">
+                <!-- 结果头部 -->
+                <div class="bg-gradient-to-br from-primary via-secondary to-accent p-8 text-white text-center relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                    <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+                    
+                    <div class="relative z-10">
+                        <p class="text-white/80 text-sm mb-2">你的灵魂职业是</p>
+                        <h2 class="text-4xl font-black mb-4">讲 解 师</h2>
+                        <div class="inline-block px-4 py-1.5 bg-white/20 rounded-full text-sm backdrop-blur-sm">
+                            ✨ 知识传递者 · 灵魂引路人
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 结果内容 -->
+                <div class="p-8 space-y-6">
+                    <!-- 性格特点 -->
+                    <div>
+                        <h3 class="text-lg font-bold text-dark mb-3 flex items-center gap-2">
+                            <span class="w-1 h-5 bg-gradient-to-b from-primary to-secondary rounded-full"></span>
+                            性格特点
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed">
+                            你天生就有一种把复杂事情讲明白的魔力。无论是生活琐事还是专业知识，经你之口总能变得清晰有趣。你乐于分享，享受帮助他人理解事物的成就感，表达逻辑清晰，观察力敏锐，总能捕捉到别人忽略的细节。
+                        </p>
+                    </div>
+
+                    <!-- 匹配理由 -->
+                    <div>
+                        <h3 class="text-lg font-bold text-dark mb-3 flex items-center gap-2">
+                            <span class="w-1 h-5 bg-gradient-to-b from-secondary to-accent rounded-full"></span>
+                            匹配理由
+                        </h3>
+                        <div class="space-y-2">
+                            <div class="flex items-start gap-3">
+                                <span class="text-primary mt-0.5">●</span>
+                                <span class="text-slate-600">表达欲强，擅长用语言传递价值</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-secondary mt-0.5">●</span>
+                                <span class="text-slate-600">逻辑清晰，善于拆解复杂信息</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-accent mt-0.5">●</span>
+                                <span class="text-slate-600">共情力强，懂得换位思考</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 隐藏优势 -->
+                    <div>
+                        <h3 class="text-lg font-bold text-dark mb-3 flex items-center gap-2">
+                            <span class="w-1 h-5 bg-gradient-to-b from-accent to-primary rounded-full"></span>
+                            隐藏优势
+                        </h3>
+                        <div class="bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 rounded-2xl p-5 border border-white/50">
+                            <p class="text-slate-700 leading-relaxed">
+                                你拥有<span class="font-bold text-primary">「化繁为简」</span>的特殊天赋。大多数人容易陷入细节迷宫，而你总能快速抓住核心，并用最通俗的语言传达出来。这种能力在任何时代都是稀缺资源。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 趣味彩蛋 -->
+                    <div>
+                        <h3 class="text-lg font-bold text-dark mb-3 flex items-center gap-2">
+                            <span class="w-1 h-5 bg-gradient-to-b from-primary to-accent rounded-full"></span>
+                            趣味彩蛋
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed">
+                            据说灵魂是讲解师的人，小时候都有过对着空气讲课、或者给同学讲题讲到上瘾的经历。你有没有中枪？🙈
+                        </p>
+                    </div>
+
+                    <!-- 专属文案 -->
+                    <div class="bg-gradient-to-r from-dark to-slate-800 rounded-2xl p-6 text-center">
+                        <p class="text-white/60 text-sm mb-2">✨ 专属灵魂文案</p>
+                        <p class="text-white font-bold text-lg">
+                            "世界是一本大书，<br>而你生来就是翻书人"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 操作按钮 -->
+                <div class="px-8 pb-8 space-y-3">
+                    <button onclick="restartTest()" class="w-full py-4 px-6 bg-gradient-to-r from-primary via-secondary to-accent text-white font-bold rounded-2xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transform hover:-translate-y-0.5 transition-all duration-300">
+                        再测一次
+                    </button>
+                    <p class="text-center text-slate-400 text-xs">长按截图，分享给你的朋友</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 题目数据
+        const questions = [
+            {
+                question: "周末休息时，你更倾向于？",
+                options: [
+                    { text: "宅在家里看书、刷视频充电", dimensions: { introvert: 2, thinker: 1 } },
+                    { text: "约三五好友聚会聊天", dimensions: { extrovert: 2, social: 1 } },
+                    { text: "去探索一家新开的店或景点", dimensions: { explorer: 2, creative: 1 } },
+                    { text: "在家研究一项新技能/菜谱", dimensions: { builder: 2, thinker: 1 } }
+                ]
+            },
+            {
+                question: "朋友遇到难题来找你倾诉，你通常会？",
+                options: [
+                    { text: "先共情安慰，再帮他分析问题", dimensions: { helper: 2, thinker: 1 } },
+                    { text: "直接给出解决方案和建议", dimensions: { leader: 2, thinker: 1 } },
+                    { text: "陪着他吐槽，情绪价值拉满", dimensions: { social: 2, helper: 1 } },
+                    { text: "分享自己类似的经历和感悟", dimensions: { teacher: 2, helper: 1 } }
+                ]
+            },
+            {
+                question: "在一个陌生的聚会上，你通常是？",
+                options: [
+                    { text: "主动和大家搭话，活跃气氛", dimensions: { extrovert: 2, leader: 1 } },
+                    { text: "和熟悉的人待在一起聊天", dimensions: { introvert: 1, social: 1 } },
+                    { text: "默默观察每个人的状态", dimensions: { observer: 2, thinker: 1 } },
+                    { text: "找到感兴趣的话题就会聊很多", dimensions: { thinker: 1, creative: 1 } }
+                ]
+            },
+            {
+                question: "做决定时，你更依赖？",
+                options: [
+                    { text: "逻辑分析和数据事实", dimensions: { thinker: 2, builder: 1 } },
+                    { text: "直觉和内心感受", dimensions: { creative: 2, feeler: 1 } },
+                    { text: "过往经验和他人建议", dimensions: { teacher: 1, helper: 1 } },
+                    { text: "利弊权衡后快速判断", dimensions: { leader: 2, thinker: 1 } }
+                ]
+            },
+            {
+                question: "看到一篇很有道理的文章，你会？",
+                options: [
+                    { text: "收藏起来慢慢消化", dimensions: { thinker: 1, builder: 1 } },
+                    { text: "立刻转发分享给朋友", dimensions: { teacher: 2, social: 1 } },
+                    { text: "忍不住在评论区发表看法", dimensions: { thinker: 1, leader: 1 } },
+                    { text: "整理成自己的理解记下来", dimensions: { builder: 2, thinker: 1 } }
+                ]
+            },
+            {
+                question: "工作/学习中，你更享受哪个过程？",
+                options: [
+                    { text: "攻克难题，达成目标", dimensions: { leader: 2, builder: 1 } },
+                    { text: "和团队协作一起进步", dimensions: { helper: 2, social: 1 } },
+                    { text: "把学到的东西教给别人", dimensions: { teacher: 2, helper: 1 } },
+                    { text: "创意迸发，产出新想法", dimensions: { creative: 2, explorer: 1 } }
+                ]
+            },
+            {
+                question: "你觉得以下哪种赞美最让你开心？",
+                options: [
+                    { text: "你真的太靠谱了", dimensions: { builder: 2, leader: 1 } },
+                    { text: "和你聊天太舒服了", dimensions: { social: 2, helper: 1 } },
+                    { text: "你讲得好清楚明白", dimensions: { teacher: 2, thinker: 1 } },
+                    { text: "你想法好有创意", dimensions: { creative: 2, explorer: 1 } }
+                ]
+            },
+            {
+                question: "压力大的时候，你会怎么解压？",
+                options: [
+                    { text: "找人倾诉，把情绪说出来", dimensions: { social: 2, feeler: 1 } },
+                    { text: "自己消化，独处放空", dimensions: { introvert: 2, thinker: 1 } },
+                    { text: "做点别的事转移注意力", dimensions: { explorer: 2, creative: 1 } },
+                    { text: "分析压力来源并解决它", dimensions: { thinker: 2, leader: 1 } }
+                ]
+            },
+            {
+                question: "在团体项目中，你常扮演的角色是？",
+                options: [
+                    { text: "统筹全局的组织者", dimensions: { leader: 2, builder: 1 } },
+                    { text: "出谋划策的创意担当", dimensions: { creative: 2, explorer: 1 } },
+                    { text: "协调关系的润滑剂", dimensions: { helper: 2, social: 1 } },
+                    { text: "分享经验的指导者", dimensions: { teacher: 2, helper: 1 } }
+                ]
+            },
+            {
+                question: "你对以下哪类内容最感兴趣？",
+                options: [
+                    { text: "科普知识、人文历史", dimensions: { thinker: 2, teacher: 1 } },
+                    { text: "情感故事、生活感悟", dimensions: { feeler: 2, social: 1 } },
+                    { text: "技能教程、干货分享", dimensions: { builder: 2, teacher: 1 } },
+                    { text: "艺术创作、设计美学", dimensions: { creative: 2, explorer: 1 } }
+                ]
+            },
+            {
+                question: "别人向你请教问题时，你的第一反应是？",
+                options: [
+                    { text: "很开心，耐心讲清楚", dimensions: { teacher: 2, helper: 1 } },
+                    { text: "有点紧张，怕讲不好", dimensions: { introvert: 1, feeler: 1 } },
+                    { text: "直接告诉他怎么做", dimensions: { leader: 2, builder: 1 } },
+                    { text: "让他先自己想想看", dimensions: { thinker: 2, leader: 1 } }
+                ]
+            },
+            {
+                question: "以下哪种生活状态最吸引你？",
+                options: [
+                    { text: "稳定有序，按计划进行", dimensions: { builder: 2, thinker: 1 } },
+                    { text: "充满变化，每天都新鲜", dimensions: { explorer: 2, creative: 1 } },
+                    { text: "温暖热闹，有人陪伴", dimensions: { social: 2, helper: 1 } },
+                    { text: "持续成长，不断输出价值", dimensions: { teacher: 2, leader: 1 } }
+                ]
+            },
+            {
+                question: "如果要上台分享，你会？",
+                options: [
+                    { text: "精心准备，反复演练", dimensions: { builder: 2, teacher: 1 } },
+                    { text: "列个大纲，临场发挥", dimensions: { creative: 2, leader: 1 } },
+                    { text: "有点紧张但还是会做好", dimensions: { introvert: 1, thinker: 1 } },
+                    { text: "享受分享的过程", dimensions: { teacher: 2, extrovert: 1 } }
+                ]
+            },
+            {
+                question: "你更看重一件事的？",
+                options: [
+                    { text: "结果和实际价值", dimensions: { leader: 2, builder: 1 } },
+                    { text: "过程中的体验感受", dimensions: { feeler: 2, explorer: 1 } },
+                    { text: "能否帮助到他人", dimensions: { helper: 2, teacher: 1 } },
+                    { text: "是否有新意和创意", dimensions: { creative: 2, explorer: 1 } }
+                ]
+            },
+            {
+                question: "和人争论时，你通常会？",
+                options: [
+                    { text: "摆事实讲道理，以理服人", dimensions: { thinker: 2, leader: 1 } },
+                    { text: "不想吵架，选择妥协", dimensions: { helper: 1, feeler: 1 } },
+                    { text: "试图说服对方接受观点", dimensions: { teacher: 2, leader: 1 } },
+                    { text: "求同存异，保留意见", dimensions: { thinker: 1, observer: 1 } }
+                ]
+            },
+            {
+                question: "闲暇时，你更喜欢哪种娱乐方式？",
+                options: [
+                    { text: "看纪录片、公开课", dimensions: { thinker: 2, teacher: 1 } },
+                    { text: "追剧、刷综艺", dimensions: { social: 1, feeler: 1 } },
+                    { text: "做手工、画画等创作", dimensions: { creative: 2, builder: 1 } },
+                    { text: "运动、户外活动", dimensions: { explorer: 2, leader: 1 } }
+                ]
+            },
+            {
+                question: "你觉得自己最核心的价值在于？",
+                options: [
+                    { text: "解决问题的能力", dimensions: { builder: 2, leader: 1 } },
+                    { text: "带给别人温暖", dimensions: { helper: 2, social: 1 } },
+                    { text: "传递知识与见解", dimensions: { teacher: 2, thinker: 1 } },
+                    { text: "创造新的可能性", dimensions: { creative: 2, explorer: 1 } }
+                ]
+            },
+            {
+                question: "面对陌生领域的知识，你会？",
+                options: [
+                    { text: "深入研究，搞懂原理", dimensions: { thinker: 2, builder: 1 } },
+                    { text: "浅尝辄止，了解大概", dimensions: { explorer: 1, creative: 1 } },
+                    { text: "学会后想分享给别人", dimensions: { teacher: 2, helper: 1 } },
+                    { text: "看有没有实用价值", dimensions: { leader: 2, builder: 1 } }
+                ]
+            },
+            {
+                question: "以下哪个比喻最像你？",
+                options: [
+                    { text: "一盏灯，照亮别人", dimensions: { teacher: 2, helper: 1 } },
+                    { text: "一座山，可靠稳重", dimensions: { builder: 2, leader: 1 } },
+                    { text: "一阵风，自由灵动", dimensions: { creative: 2, explorer: 1 } },
+                    { text: "一团火，温暖热情", dimensions: { social: 2, extrovert: 1 } }
+                ]
+            },
+            {
+                question: "如果能拥有一项天赋，你希望是？",
+                options: [
+                    { text: "过目不忘的记忆力", dimensions: { thinker: 2, builder: 1 } },
+                    { text: "魅力十足的表达力", dimensions: { teacher: 2, leader: 1 } },
+                    { text: "源源不断的创造力", dimensions: { creative: 2, explorer: 1 } },
+                    { text: "洞察人心的共情力", dimensions: { helper: 2, feeler: 1 } }
+                ]
+            }
+        ];
+
+        // 状态管理
+        let currentQuestion = 0;
+        let scores = {};
+        const loadingTips = [
+            "计算性格维度中...",
+            "分析你的潜意识偏好...",
+            "匹配灵魂职业属性...",
+            "生成专属结果报告...",
+            "正在解锁隐藏彩蛋..."
+        ];
+
+        // 开始测试
+        function startTest() {
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('quizPage').classList.remove('hidden');
+            document.getElementById('quizPage').classList.add('animate-fade-in');
+            currentQuestion = 0;
+            scores = {};
+            showQuestion();
+        }
+
+        // 显示题目
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('questionText').textContent = q.question;
+            document.getElementById('currentNum').textContent = currentQuestion + 1;
+            
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = Math.round(progress) + '%';
+
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+
+            q.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-4 rounded-2xl border-2 border-slate-100 bg-white/50 hover:border-primary/30 hover:bg-primary/5 option-hover text-slate-700 font-medium';
+                btn.innerHTML = `<span class="inline-block w-8 h-8 rounded-lg bg-slate-100 text-center leading-8 mr-3 text-slate-500 font-bold">${String.fromCharCode(65 + index)}</span>${option.text}`;
+                btn.onclick = () => selectOption(option);
+                container.appendChild(btn);
+                
+                // 逐题动画
+                btn.style.opacity = '0';
+                btn.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    btn.style.transition = 'all 0.4s ease-out';
+                    btn.style.opacity = '1';
+                    btn.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }
+
+        // 选择选项
+        function selectOption(option) {
+            // 计分
+            for (let dim in option.dimensions) {
+                scores[dim] = (scores[dim] || 0) + option.dimensions[dim];
+            }
+
+            // 下一题或结束
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                // 切换动画
+                const card = document.querySelector('#quizPage .bg-gradient-card');
+                card.style.opacity = '0';
+                card.style.transform = 'translateX(-30px)';
+                card.style.transition = 'all 0.3s ease-in';
+                
+                setTimeout(() => {
+                    showQuestion();
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateX(0)';
+                }, 300);
+            } else {
+                showLoading();
+            }
+        }
+
+        // 显示加载
+        function showLoading() {
+            document.getElementById('quizPage').classList.add('hidden');
+            document.getElementById('loadingPage').classList.remove('hidden');
+            document.getElementById('loadingPage').classList.add('animate-fade-in');
+
+            let tipIndex = 0;
+            const tipInterval = setInterval(() => {
+                tipIndex++;
+                if (tipIndex < loadingTips.length) {
+                    document.getElementById('loadingTip').textContent = loadingTips[tipIndex];
+                }
+            }, 600);
+
+            // 模拟计算后显示结果
+            setTimeout(() => {
+                clearInterval(tipInterval);
+                showResult();
+            }, 3000);
+        }
+
+        // 显示结果
+        function showResult() {
+            document.getElementById('loadingPage').classList.add('hidden');
+            document.getElementById('resultPage').classList.remove('hidden');
+            document.getElementById('resultPage').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 重新测试
+        function restartTest() {
+            document.getElementById('resultPage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+            document.getElementById('homePage').classList.add('animate-fade-in');
+            currentQuestion = 0;
+            scores = {};
+        }
+    </script>
+</body>
+</html>
